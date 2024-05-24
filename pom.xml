@@ -9,7 +9,6 @@
   </modules>
   
       <build>
-		<finalName>mysite2</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
