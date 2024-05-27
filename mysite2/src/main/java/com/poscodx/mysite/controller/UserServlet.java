@@ -10,6 +10,7 @@ import com.poscodx.mysite.controller.action.user.JoinSuccess;
 import com.poscodx.mysite.controller.action.user.LoginAction;
 import com.poscodx.mysite.controller.action.user.LoginFormAction;
 import com.poscodx.mysite.controller.action.user.LogoutAction;
+import com.poscodx.mysite.controller.action.user.UpdateAction;
 import com.poscodx.mysite.controller.action.user.UpdateFormAction;
 
 public class UserServlet extends ActionServlet {
@@ -22,7 +23,8 @@ public class UserServlet extends ActionServlet {
 		"loginform" , new LoginFormAction(),
 		"login", new LoginAction(),
 		"logout", new LogoutAction(),
-		"updateform" , new UpdateFormAction()
+		"updateform" , new UpdateFormAction(),
+		"update", new UpdateAction()
 	);	
 	
 	@Override

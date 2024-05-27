@@ -79,7 +79,62 @@ public class UserDao {
 
 	public UserVo findByNo(Long no) {
 		UserVo result= null;
-		return result;
+		
+	      try (
+	    	Connection conn = getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement("select name, email, gender from user where no=? ");
+	      ){
+	    	 //바인딩
+	         pstmt.setLong(1, no);
+	         
+	         ResultSet rs = pstmt.executeQuery();
+	         if (rs.next()) {
+	        	 String name= rs.getString(1);
+	        	 String email= rs.getString(2);
+	        	 String gender= rs.getString(3);
+	        	 
+	        	 result= new UserVo();
+	        	 result.setName(name);
+	        	 result.setEmail(email);
+	        	 result.setGender(gender);
+	         }
+	         rs.close();
+	      } catch (SQLException e) {
+	         System.out.println("error:"+e);
+	      }
+	      
+	    return result;
+	}
+
+	public void update(UserVo vo) {
+	      try (
+	    	Connection conn = getConnection();
+	        PreparedStatement pstmt1 = conn.prepareStatement("update user set name=?, gender=? where no=?");
+	        PreparedStatement pstmt2 = conn.prepareStatement("update user set name=?, password=password(?), gender=? where no=?");
+	    ){
+	    	 //바인딩
+	    	String password=vo.getPassword();
+	    	
+	    	if (password.equals("")) {
+	    		System.out.println("비밀번호 변경x");
+	    		pstmt1.setString(1, vo.getName());
+		    	pstmt1.setString(2, vo.getGender());
+		        pstmt1.setLong(3, vo.getNo());
+		         
+		        pstmt1.executeQuery();
+	    	} else {
+	    		System.out.println("비밀번호 변경");
+	    		pstmt2.setString(1, vo.getName());
+		    	pstmt2.setString(2, password);
+		    	pstmt2.setString(3, vo.getGender());
+		        pstmt2.setLong(4, vo.getNo());
+		         
+		        pstmt2.executeQuery();
+	    	}
+	        
+	      } catch (SQLException e) {
+	         System.out.println("error:"+e);
+	      }
 	}
 	
 }
