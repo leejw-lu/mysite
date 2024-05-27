@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	UserVo userVo= (UserVo) request.getAttribute("userVo");
+	String result= request.getParameter("result");
 %>
 <!DOCTYPE html>
 <html>
@@ -55,3 +56,10 @@
 	</div>
 </body>
 </html>
+<%
+	if("success".equals(result)) {
+%>
+	<script>alert('성공적으로 수정 하였습니다.')</script>
+<%
+	}
+%>
