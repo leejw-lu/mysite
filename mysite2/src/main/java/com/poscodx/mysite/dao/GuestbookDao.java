@@ -82,7 +82,7 @@ public class GuestbookDao {
 		return result;
 	}
 
-	public void deleteByNo(GuestbookVo vo) {
+	public void deleteByNoAndPassword(GuestbookVo vo) {
 
 		try (
 			Connection conn= getConnection();
