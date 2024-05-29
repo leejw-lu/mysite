@@ -5,11 +5,7 @@ import java.util.Map;
 import com.poscodx.mysite.controller.action.guestbook.DeleteAction;
 import com.poscodx.mysite.controller.action.guestbook.DeleteFormAction;
 import com.poscodx.mysite.controller.action.guestbook.GuestbookAction;
-import com.poscodx.mysite.controller.action.guestbook.insertAction;
-import com.poscodx.mysite.controller.action.main.MainAction;
-import com.poscodx.mysite.controller.action.user.JoinAction;
-import com.poscodx.mysite.controller.action.user.JoinFormAction;
-import com.poscodx.mysite.controller.action.user.JoinSuccess;
+import com.poscodx.mysite.controller.action.guestbook.InsertAction;
 
 public class GuestbookServlet extends ActionServlet {
 	private static final long serialVersionUID = 1L;
@@ -17,7 +13,7 @@ public class GuestbookServlet extends ActionServlet {
 	private Map<String, Action> mapAction = Map.of(
 			"deleteform", new DeleteFormAction(),
 			"delete", new DeleteAction(),
-			"insert" , new insertAction()
+			"insert" , new InsertAction()
 	);	
 		
 	@Override

@@ -10,7 +10,7 @@ import com.poscodx.mysite.controller.ActionServlet.Action;
 import com.poscodx.mysite.dao.GuestbookDao;
 import com.poscodx.mysite.vo.GuestbookVo;
 
-public class insertAction implements Action {
+public class InsertAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
