@@ -31,7 +31,7 @@ public class BoardDao {
 	      
 	      try (
 	    	Connection conn = getConnection();
-	        PreparedStatement pstmt1 = conn.prepareStatement("insert into board select null, ?, ?, ?, now(), max(g_no)+1 , ?, ?, ? from board;");
+	        PreparedStatement pstmt1 = conn.prepareStatement("insert into board select null, ?, ?, ?, now(), max(g_no)+1 , ?, ?, ? from board");
 	        PreparedStatement pstmt2 = conn.prepareStatement("select last_insert_id() from dual");
 	      ){
 	    	 //바인딩
@@ -90,22 +90,32 @@ public class BoardDao {
 		
 	    try (
 	    	Connection conn = getConnection();
-	        PreparedStatement pstmt = conn.prepareStatement("select no, title, contents, user_no from board where no= ?");
+	        PreparedStatement pstmt = conn.prepareStatement("select no, title, contents, user_no, g_no, o_no, depth from board where no= ?");
 	      ){
 	    	pstmt.setLong(1, no);
 	    	ResultSet rs = pstmt.executeQuery();
 
 	    	if (rs.next()) {
 	    		vo= new BoardVo();
+	    		//ModifyForm에서 필요
 				Long boardNo= rs.getLong(1);
 				String title=rs.getString(2);
 				String contents= rs.getString(3);
 				Long userNo= rs.getLong(4);
 				
+				//Write(Reply)에서 필요
+				int groupNo=rs.getInt(5);
+				int orderNo=rs.getInt(6);
+				int depth=rs.getInt(7);
+				
 				vo.setNo(boardNo);
 				vo.setTitle(title);
 				vo.setContents(contents);
 				vo.setUserNo(userNo);
+				
+				vo.setgNo(groupNo);
+				vo.setoNo(orderNo);
+				vo.setDepth(depth);
 	    	}
 	    	rs.close();
 	    	
@@ -145,6 +155,48 @@ public class BoardDao {
 	      } catch (SQLException e) {
 	         System.out.println("error:"+e);
 	      }
+	}
+
+	public int insertReply(BoardVo vo) {
+	      int result = 0;
+	      
+	      try (
+	    	Connection conn = getConnection();
+	    	PreparedStatement pstmt1= conn.prepareStatement("update board set o_no=o_no+1 where g_no= ? and o_no= ? ");
+	        PreparedStatement pstmt2 = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?)");
+	        PreparedStatement pstmt3 = conn.prepareStatement("select last_insert_id() from dual");
+	      ){
+	    	 //바인딩
+	    	 
+	    	 //1. 증가
+	    	 int oNo=vo.getoNo()+1;
+	    	 int depth=vo.getDepth()+1;
+	    	 
+	    	 System.out.println("oNo: " +oNo);
+	    	 System.out.println("depth: " +depth);
+	    	 
+	    	 //2. update
+	    	 pstmt1.setInt(1, vo.getgNo());
+	    	 pstmt1.setInt(2, oNo);
+	    	 pstmt1.executeUpdate();
+	    	 
+	    	 //3. insert
+	         pstmt2.setString(1, vo.getTitle());
+	         pstmt2.setString(2, vo.getContents());
+	         pstmt2.setInt(3, vo.getHit());		
+	         pstmt2.setInt(4, vo.getgNo());
+	         pstmt2.setInt(5, oNo);		
+	         pstmt2.setInt(6, depth);	
+	         pstmt2.setLong(7, vo.getUserNo());
+	         
+	         ResultSet rs = pstmt2.executeQuery();
+	         vo.setNo(rs.next() ? rs.getLong(1) : null);
+	         rs.close();
+	      } catch (SQLException e) {
+	         System.out.println("error:"+e);
+	      }
+	      
+	      return result;
 	}
 
 }
