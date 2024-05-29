@@ -40,7 +40,7 @@
 									<td>${count- status.index }</td>
 									<td>${vo.name }</td>
 									<td>${vo.regDate }</td>
-									<td><a href="${pageContext.request.contextPath}/guestbook?a=deleteform&no=${vo.no }">삭제</a></td>
+									<td><a href="${pageContext.request.contextPath}/guestbook?a=delete&no=${vo.no }">삭제</a></td>
 								</tr>
 								<tr>
 									<td colspan=4>${fn:replace(fn:replace(fn:replace(vo.contents, ">", "&gt;"), "<", "&lt;"), newline, "<br>") }</td>

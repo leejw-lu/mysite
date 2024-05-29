@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.poscodx.mysite.vo.BoardVo;
-import com.poscodx.mysite.vo.GuestbookVo;
 
 public class BoardDao {
 	private Connection getConnection() throws SQLException {
@@ -115,6 +114,37 @@ public class BoardDao {
 	      }
 	      
 	   return vo;
+	}
+
+	public void deleteByNo(BoardVo vo) {
+		try (
+			Connection conn= getConnection();
+			PreparedStatement pstmt= conn.prepareStatement("delete from board where no = ? and user_no= ?");
+			) { 
+				pstmt.setLong(1, vo.getNo());
+				pstmt.setLong(2, vo.getUserNo());
+				pstmt.executeUpdate();			
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+	}
+
+	public void update(BoardVo vo) {
+	      try (
+	    	Connection conn = getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement("update board set title=?, contents=? where no=? and user_no=?");
+	      ){
+	    	 //바인딩
+	         pstmt.setString(1, vo.getTitle());
+	         pstmt.setString(2, vo.getContents());
+	         pstmt.setLong(3, vo.getNo());
+	         pstmt.setLong(4, vo.getUserNo());
+
+	         pstmt.executeQuery();
+	         
+	      } catch (SQLException e) {
+	         System.out.println("error:"+e);
+	      }
 	}
 
 }

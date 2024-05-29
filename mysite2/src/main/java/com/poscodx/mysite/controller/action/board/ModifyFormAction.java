@@ -10,7 +10,7 @@ import com.poscodx.mysite.controller.ActionServlet.Action;
 import com.poscodx.mysite.dao.BoardDao;
 import com.poscodx.mysite.vo.BoardVo;
 
-public class ViewAction implements Action {
+public class ModifyFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -18,9 +18,8 @@ public class ViewAction implements Action {
 		BoardVo vo = new BoardDao().findByNo(Long.parseLong(no));
 		
 		request.setAttribute("vo", vo);
-		
 		request
-			.getRequestDispatcher("/WEB-INF/views/board/view.jsp")
+			.getRequestDispatcher("/WEB-INF/views/board/modify.jsp")
 			.forward(request, response);
 	}
 
