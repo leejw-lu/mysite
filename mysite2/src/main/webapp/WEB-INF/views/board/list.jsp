@@ -28,10 +28,10 @@
 						<th>&nbsp;</th>
 					</tr>
 					
-					<c:set var="count" value="${fn:length(list) }" />
+					<c:set var="count" value="${page.totalCount }" />
 					<c:forEach items='${list }' var='vo' varStatus="status">				
 					<tr>
-						<td>${count- status.index }</td>
+						<td>${count- (status.index + 3*(page.currentPage-1))  }</td>
 						<td style="text-align:left; padding-left:${20* vo.depth }px">
 							<c:if test="${vo.depth > 0 }">
 								<img src='${pageContext.request.contextPath}/assets/images/reply.png'>
@@ -54,13 +54,38 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						<c:choose> 
+							<c:when test="${page.currentPage eq 1}">
+								<li>◀</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.request.contextPath}/board?p=${page.currentPage -1}">◀</a></li>
+							</c:otherwise> 
+						</c:choose> 
+
+						<c:forEach var="i" begin="${page.beginPage }" end="${page.beginPage + 4 }">
+							<c:choose> 
+								<c:when test="${page.currentPage eq i}">
+									<li class="selected">${page.currentPage }</li>
+								</c:when>
+								<c:when test="${page.endPage < i}">
+									<li>${i}</li>
+								</c:when> 
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/board?p=${i}">${i}</a></li>
+								</c:otherwise> 
+							</c:choose> 
+						</c:forEach>
+						
+						<c:choose> 
+							<c:when test="${page.currentPage >= page.endPage}">
+								<li>▶</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.request.contextPath}/board?p=${page.currentPage +1}">▶</a></li>
+							</c:otherwise> 
+						</c:choose> 
+					
 					</ul>
 				</div>					
 				<!-- pager 추가 -->

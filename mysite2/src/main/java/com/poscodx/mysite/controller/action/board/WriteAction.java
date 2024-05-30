@@ -71,7 +71,7 @@ public class WriteAction implements Action {
 			new BoardDao().insertReply(vo);
 		}
 		
-		response.sendRedirect(request.getContextPath()+ "/board");
+		response.sendRedirect(request.getContextPath()+ "/board?p=1");
 	}
 
 }

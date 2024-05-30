@@ -15,9 +15,25 @@ public class BoardListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<BoardVo> list = new BoardDao().findAll();
+		
+		String pageNo= request.getParameter("p");
+		if (pageNo==null) {
+			pageNo="1";
+		}
+		
+		//한 페이지에 보이는 게시물 개수
+		int viewCount= 4;
+		
+		//해당 page 글 정보 가져오기
+		List<BoardVo> list = new BoardDao().findAll(Integer.parseInt(pageNo), viewCount);
 		request.setAttribute("list", list);
 
+		//page 정보 세팅하기
+		Page page = new BoardDao().findPage(Integer.parseInt(pageNo), viewCount);
+		request.setAttribute("page", page);
+		
+		//System.out.println("b: " + page.getBeginPage() + " c:" + page.getCurrentPage() + " e: "+ page.getEndPage());
+		
 		request
 			.getRequestDispatcher("/WEB-INF/views/board/list.jsp")
 			.forward(request, response);

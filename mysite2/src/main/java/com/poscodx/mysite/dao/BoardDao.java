@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.poscodx.mysite.controller.action.board.Page;
 import com.poscodx.mysite.vo.BoardVo;
 
 public class BoardDao {
@@ -53,15 +54,18 @@ public class BoardDao {
 	      return result;
 	   }
 
-	public List<BoardVo> findAll() {
+	public List<BoardVo> findAll(int pageNo, int viewCount) {
 		List<BoardVo> result = new ArrayList<>();
 		
 		try (
 			Connection conn= getConnection();
-			PreparedStatement pstmt= conn.prepareStatement("select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no asc");
-			ResultSet rs= pstmt.executeQuery();
+			PreparedStatement pstmt= conn.prepareStatement("select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no asc limit ? , ?");
+			
 		) { 
-		
+			pstmt.setLong(1, (pageNo-1) * viewCount);
+			pstmt.setLong(2, viewCount);
+			ResultSet rs= pstmt.executeQuery();
+			
 			while(rs.next()) {
 
 				String name= rs.getString(1);
@@ -166,8 +170,6 @@ public class BoardDao {
 	        PreparedStatement pstmt2 = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?)");
 	        PreparedStatement pstmt3 = conn.prepareStatement("select last_insert_id() from dual");
 	      ){
-	    	 //바인딩
-	    	 
 	    	 //1. 증가
 	    	 int oNo=vo.getoNo()+1;
 	    	 int depth=vo.getDepth()+1;
@@ -197,6 +199,45 @@ public class BoardDao {
 	      }
 	      
 	      return result;
+	}
+
+	public Page findPage(int pageNo, int viewCount) {
+		Page page=null;
+		
+	    try (
+	    	Connection conn = getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement("select count(*), ceil(count(*)/?) from board;");
+	    	
+	    	){
+	    	pstmt.setInt(1, viewCount);
+	    	
+	    	ResultSet rs = pstmt.executeQuery();
+	    	if (rs.next()) {
+	    		page= new Page();
+
+	    		int totalCount= rs.getInt(1);
+	    		int endPage=rs.getInt(2);
+	    		int beginPage;
+	    		if (pageNo==1 || pageNo==2) {
+	    			beginPage=1;
+	    		}else {
+	    			beginPage=pageNo-2;
+	    		}
+	    		
+	    		page.setTotalCount(totalCount);
+	    		page.setEndPage(endPage);
+	    		page.setCurrentPage(pageNo);
+	    		page.setBeginPage(beginPage);
+	    		
+	    		page.setBeginPage(beginPage);
+	    	}
+	    	rs.close();
+	    	
+	      } catch (SQLException e) {
+	         System.out.println("error:"+e);
+	      }
+	    
+		return page;
 	}
 
 }
