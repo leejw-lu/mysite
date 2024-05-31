@@ -54,7 +54,7 @@ public class BoardDao {
 	      return result;
 	   }
 
-	public List<BoardVo> findAll(int pageNo, int viewCount) {
+	public List<BoardVo> findAll(int pageNo, int pageSize) {
 		List<BoardVo> result = new ArrayList<>();
 		
 		try (
@@ -62,8 +62,8 @@ public class BoardDao {
 			PreparedStatement pstmt= conn.prepareStatement("select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no asc limit ? , ?");
 			
 		) { 
-			pstmt.setLong(1, (pageNo-1) * viewCount);
-			pstmt.setLong(2, viewCount);
+			pstmt.setLong(1, (pageNo-1) * pageSize);
+			pstmt.setLong(2, pageSize);
 			ResultSet rs= pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -95,10 +95,10 @@ public class BoardDao {
 	    try (
 	    	Connection conn = getConnection();
 	        PreparedStatement pstmt = conn.prepareStatement("select no, title, contents, user_no, g_no, o_no, depth from board where no= ?");
-	      ){
+	    ){
 	    	pstmt.setLong(1, no);
 	    	ResultSet rs = pstmt.executeQuery();
-
+	    	
 	    	if (rs.next()) {
 	    		vo= new BoardVo();
 	    		//ModifyForm에서 필요
@@ -201,7 +201,7 @@ public class BoardDao {
 	      return result;
 	}
 
-	public Page findPage(int pageNo, int viewCount) {
+	public Page findPage(int pageNo, int pageSize) {
 		Page page=null;
 		
 	    try (
@@ -209,7 +209,7 @@ public class BoardDao {
 	        PreparedStatement pstmt = conn.prepareStatement("select count(*), ceil(count(*)/?) from board;");
 	    	
 	    	){
-	    	pstmt.setInt(1, viewCount);
+	    	pstmt.setInt(1, pageSize);
 	    	
 	    	ResultSet rs = pstmt.executeQuery();
 	    	if (rs.next()) {
@@ -228,8 +228,7 @@ public class BoardDao {
 	    		page.setEndPage(endPage);
 	    		page.setCurrentPage(pageNo);
 	    		page.setBeginPage(beginPage);
-	    		
-	    		page.setBeginPage(beginPage);
+	    		page.setPageSize(pageSize);
 	    	}
 	    	rs.close();
 	    	
@@ -238,6 +237,19 @@ public class BoardDao {
 	      }
 	    
 		return page;
+	}
+
+	public void updateHits(Long no) {
+		try (
+		    Connection conn = getConnection();
+			PreparedStatement pstmt= conn.prepareStatement("update board set hit=hit+1 where no= ?");
+		    ){
+				pstmt.setLong(1, no);
+		    	pstmt.executeQuery();
+
+		      } catch (SQLException e) {
+		    	  System.out.println("error:"+e);
+		 }
 	}
 
 }

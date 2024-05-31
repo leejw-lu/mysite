@@ -5,6 +5,7 @@ public class Page {
 	private int endPage;
 	private int currentPage;
 	private int totalCount;
+	private int pageSize;
 	
 	public int getBeginPage() {
 		return beginPage;
@@ -29,6 +30,13 @@ public class Page {
 	}
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+	}
+	
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 
 }

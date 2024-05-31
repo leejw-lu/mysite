@@ -31,7 +31,7 @@
 					<c:set var="count" value="${page.totalCount }" />
 					<c:forEach items='${list }' var='vo' varStatus="status">				
 					<tr>
-						<td>${count- (status.index + 3*(page.currentPage-1))  }</td>
+						<td>${count- (status.index + 6*(page.currentPage-1))  }</td>
 						<td style="text-align:left; padding-left:${20* vo.depth }px">
 							<c:if test="${vo.depth > 0 }">
 								<img src='${pageContext.request.contextPath}/assets/images/reply.png'>

@@ -21,15 +21,14 @@ public class BoardListAction implements Action {
 			pageNo="1";
 		}
 		
-		//한 페이지에 보이는 게시물 개수
-		int viewCount= 4;
+		int pageSize= 6;	//한 페이지에 보이는 게시물 개수
 		
 		//해당 page 글 정보 가져오기
-		List<BoardVo> list = new BoardDao().findAll(Integer.parseInt(pageNo), viewCount);
+		List<BoardVo> list = new BoardDao().findAll(Integer.parseInt(pageNo), pageSize);
 		request.setAttribute("list", list);
 
 		//page 정보 세팅하기
-		Page page = new BoardDao().findPage(Integer.parseInt(pageNo), viewCount);
+		Page page = new BoardDao().findPage(Integer.parseInt(pageNo), pageSize);
 		request.setAttribute("page", page);
 		
 		//System.out.println("b: " + page.getBeginPage() + " c:" + page.getCurrentPage() + " e: "+ page.getEndPage());
