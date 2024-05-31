@@ -17,36 +17,30 @@ public class ViewAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String no= request.getParameter("no");
 		BoardVo vo = new BoardDao().findByNo(Long.parseLong(no));
-		
+	    
 		//쿠키
-//		boolean updateHit=false;
-//		
-//		Cookie[] cookies = request.getCookies();
-//		if (cookies!=null) {
-//			System.out.println("cookies null 아님");
-//			for (Cookie c: cookies) {
-//				System.out.println("cookie for문");
-//				if(c.getName().equals("visitBoardNo:"+no)){
-//					System.out.println("visitBoardNo: " + c.getName());
-//					updateHit=true;
-//					break;
-//				}
-//			}
-//		} else {
-//			System.out.println("cookies 없음");
-//			Cookie cookie = new Cookie("visitBoardNo:"+no, no);
-//			cookie.setPath(request.getContextPath());
-//			cookie.setMaxAge(24* 60* 60); //1day
-//			response.addCookie(cookie);
-//			
-//			updateHit=true;
-//		}
-//		
-//		if(updateHit) {
-//			new BoardDao().updateHits(Long.parseLong(no));
-//		}
+		boolean updateHit=true;
 		
-		new BoardDao().updateHits(Long.parseLong(no));
+		Cookie[] cookies = request.getCookies();
+		
+		if (cookies!=null) {
+			for (Cookie cookie: cookies) {
+				if(cookie.getName().equals("visitBoard"+no)){
+					System.out.println("visitBoardNo: " + cookie.getName());
+					updateHit=false;
+					break;
+				} 
+			}
+		}
+
+		if(updateHit) {
+			Cookie cookie = new Cookie("visitBoard"+no, no);
+			cookie.setPath(request.getContextPath());
+			cookie.setMaxAge(24* 60* 60); //1day
+			response.addCookie(cookie);
+		
+			new BoardDao().updateHits(Long.parseLong(no));
+		} 
 		
 		request.setAttribute("vo", vo);
 		
