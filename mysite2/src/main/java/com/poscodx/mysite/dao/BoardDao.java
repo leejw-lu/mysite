@@ -166,7 +166,7 @@ public class BoardDao {
 	      
 	      try (
 	    	Connection conn = getConnection();
-	    	PreparedStatement pstmt1= conn.prepareStatement("update board set o_no=o_no+1 where g_no= ? and o_no= ? ");
+	    	PreparedStatement pstmt1= conn.prepareStatement("update board set o_no=o_no+1 where g_no= ? and o_no >= ? ");
 	        PreparedStatement pstmt2 = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?)");
 	        PreparedStatement pstmt3 = conn.prepareStatement("select last_insert_id() from dual");
 	      ){
