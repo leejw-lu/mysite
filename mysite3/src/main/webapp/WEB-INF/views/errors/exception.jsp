@@ -8,5 +8,9 @@
 </head>
 <body>
 	<h1>Exception Handler: Spring </h1>
+	<hr>
+	<pre>
+	${errors }
+	</pre>
 </body>
 </html>
