@@ -37,13 +37,13 @@
 								<img src='${pageContext.request.contextPath}/assets/images/reply.png'>
 							</c:if>
 							
-							<a href="${pageContext.request.contextPath}/board?a=view&no=${vo.no }">${vo.title }</a>
+							<a href="${pageContext.request.contextPath}/board/view/${vo.no }">${vo.title }</a>
 						</td>
 						<td>${vo.userName }</td>
 						<td>${vo.hit }</td>
 						<td>${vo.regDate }</td>
 						<c:if test="${vo.userName eq authUser.name}">
-							<td><a href="${pageContext.request.contextPath}/board?a=delete&no=${vo.no }" class="del">삭제</a></td>
+							<td><a href="${pageContext.request.contextPath}/board/delete/${vo.no }" class="del">삭제</a></td>
 						</c:if>
 						
 					</tr>
@@ -92,7 +92,7 @@
 							
 				<c:if test="${not empty authUser.no}">
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath}/board?a=writeform" id="new-book">글쓰기</a>
+						<a href="${pageContext.request.contextPath}/board/insert/" id="new-book">글쓰기</a>
 					</div>
 				</c:if>
 			</div>

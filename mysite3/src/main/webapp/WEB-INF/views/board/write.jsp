@@ -14,8 +14,7 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board">
-					<input type = "hidden" name = "a" value="write">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/insert">
 					<c:if test="${not empty vo}">
 							<input type = "hidden" name = "groupNo" value="${vo.gNo}">
 							<input type = "hidden" name = "orderNo" value="${vo.oNo}">
@@ -32,7 +31,7 @@
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="content" name="content"></textarea>
+								<textarea id="content" name="contents"></textarea>
 							</td>
 						</tr>
 					</table>
