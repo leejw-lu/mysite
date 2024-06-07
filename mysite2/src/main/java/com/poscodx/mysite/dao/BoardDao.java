@@ -146,7 +146,7 @@ public class BoardDao {
 	public void update(BoardVo vo) {
 	      try (
 	    	Connection conn = getConnection();
-	        PreparedStatement pstmt = conn.prepareStatement("update board set title=?, contents=? where no=? and user_no=?");
+	        PreparedStatement pstmt = conn.prepareStatement("update board set title=?, contents=?, reg_date=now() where no=? and user_no=?");
 	      ){
 	    	 //바인딩
 	         pstmt.setString(1, vo.getTitle());

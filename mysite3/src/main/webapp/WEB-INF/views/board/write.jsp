@@ -16,8 +16,8 @@
 			<div id="board">
 				<form class="board-form" method="post" action="${pageContext.request.contextPath}/board/insert">
 					<c:if test="${not empty vo}">
-							<input type = "hidden" name = "groupNo" value="${vo.gNo}">
-							<input type = "hidden" name = "orderNo" value="${vo.oNo}">
+							<input type = "hidden" name = "groupNo" value="${vo.groupNo}">
+							<input type = "hidden" name = "orderNo" value="${vo.orderNo}">
 							<input type = "hidden" name = "depth" value="${vo.depth}">
 					</c:if>
 					<table class="tbl-ex">

@@ -20,7 +20,7 @@
 
 	<insert id="insert" parameterType="boardvo">
 		<choose>
-			<when test="groupNo == null">
+			<when test='groupNo == ""'>
 				<![CDATA[
 				insert into board select null, #{title }, #{contents }, 0 , now(), max(g_no)+1 , 1, 0, #{userNo} from board
 				]]>
@@ -47,7 +47,7 @@
 	
 	<update id="update" parameterType="boardvo"> 
 		<![CDATA[
-			update board set title=#{title }, contents=#{contents } where no=#{no } and user_no=#{userNo }
+			update board set title=#{title }, contents=#{contents }, reg_date=now() where no=#{no } and user_no=#{userNo }
 		]]>
 	</update>
 	

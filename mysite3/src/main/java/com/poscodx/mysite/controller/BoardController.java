@@ -30,24 +30,7 @@ public class BoardController {
 		
 		return "board/list";
 	}
-	
-//	@RequestMapping(value="/insert/{no}", method=RequestMethod.GET)
-//	public String add(HttpSession session, @PathVariable("no") Long no, Model model) {
-//		//access control
-//		UserVo authUser= (UserVo) session.getAttribute("authUser");
-//		if(authUser==null) {
-//			return "redirect:/board";
-//		}
-//		
-//		BoardVo vo=null;
-//		if (no!=null) {
-//			vo= boardService.getContents(no);	
-//		}
-//	
-//		model.addAttribute("vo", vo);	
-//		return "board/write";
-//	}
-	
+		
 	@RequestMapping(value="/insert", method=RequestMethod.GET)
 	public String add(HttpSession session) {
 		//access control
@@ -72,18 +55,41 @@ public class BoardController {
 		return "redirect:/board";
 	}
 	
+	@RequestMapping(value="/reply/{no}", method=RequestMethod.GET)
+	public String addReply(HttpSession session, @PathVariable("no") Long no, Model model) {
+		//access control
+		UserVo authUser= (UserVo) session.getAttribute("authUser");
+		if(authUser==null) {
+			return "redirect:/board";
+		}
+		
+		BoardVo vo=null;
+		if (no!=null) {
+			vo= boardService.getContents(no);	
+		}
+	
+		model.addAttribute("vo", vo);	
+		return "board/write";
+	}
+	
+	@RequestMapping(value="/reply/{no}", method=RequestMethod.POST)
+	public String addReply(HttpSession session, BoardVo vo) {
+		//access control
+		UserVo authUser= (UserVo) session.getAttribute("authUser");
+		if(authUser==null) {
+			return "redirect:/board";
+		}
+		
+		vo.setUserNo(authUser.getNo());
+		boardService.addContents(vo);
+		return "redirect:/board";
+	}
+	
 	
 	@RequestMapping("/view/{no}")
 	public String view(HttpSession session, @PathVariable("no") Long no, Model model) {
-		//access control
-		UserVo authUser= (UserVo) session.getAttribute("authUser");
-		BoardVo vo= null;
-		if(authUser==null) {
-			vo=boardService.getContents(no);
-		} else {
-			vo=boardService.getContents(no, authUser.getNo());
-		}
-		
+		BoardVo vo= boardService.getContents(no);
+	
 		model.addAttribute("vo", vo);
 		return "board/view";
 	}
@@ -102,6 +108,7 @@ public class BoardController {
 	
 	@RequestMapping(value="/update/{no}", method=RequestMethod.GET)
 	public String update(HttpSession session, @PathVariable("no") Long no, Model model) {
+				
 		UserVo authUser= (UserVo) session.getAttribute("authUser");
 		if(authUser==null) {
 			return "redirect:/board";
@@ -110,23 +117,22 @@ public class BoardController {
 		BoardVo vo = boardService.getContents(no, authUser.getNo());
 		model.addAttribute("vo", vo);
 		
-		return "board/moldify";
+		return "board/modify";
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(HttpSession session, BoardVo vo) {
+	@RequestMapping(value="/update/{no}", method=RequestMethod.POST)
+	public String update(HttpSession session, @PathVariable("no") Long no, BoardVo vo) {
+		
 		// access control
 		UserVo authUser= (UserVo) session.getAttribute("authUser");
 		if(authUser==null) {
 			return "redirect:/board";
 		}
 		
-		vo.setNo(authUser.getNo());
+		vo.setUserNo(authUser.getNo());
 		boardService.updateContents(vo);
 		
-		return "redirect:/board";
+		return "redirect:/board/view/"+no;
 	}
-	
-	
 	
 }

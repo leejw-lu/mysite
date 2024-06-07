@@ -39,7 +39,7 @@ public class BoardService {
 	
 	public void addContents(BoardVo vo) {
 		if((Integer) vo.getGroupNo() != null) {
-			boardRepository.updateOrderNo(vo.getGroupNo(), vo.getOrderNo()); // 이거 분리하기...
+			boardRepository.updateOrderNo(vo.getGroupNo(), vo.getOrderNo());
 		}
 		boardRepository.insert(vo);
 	}
