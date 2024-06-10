@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.poscodx.mysite.security.Auth;
 import com.poscodx.mysite.service.BoardService;
 import com.poscodx.mysite.vo.BoardVo;
 import com.poscodx.mysite.vo.UserVo;
@@ -30,18 +31,14 @@ public class BoardController {
 		
 		return "board/list";
 	}
-		
+	
+	@Auth
 	@RequestMapping(value="/insert", method=RequestMethod.GET)
-	public String add(HttpSession session) {
-		//access control
-		UserVo authUser= (UserVo) session.getAttribute("authUser");
-		if(authUser==null) {
-			return "redirect:/board";
-		}
-
+	public String add() {
 		return "board/write";
 	}
 	
+	@Auth
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	public String add(HttpSession session, BoardVo vo) {
 		//access control
@@ -55,6 +52,7 @@ public class BoardController {
 		return "redirect:/board";
 	}
 	
+	@Auth
 	@RequestMapping(value="/reply/{no}", method=RequestMethod.GET)
 	public String addReply(HttpSession session, @PathVariable("no") Long no, Model model) {
 		//access control
@@ -72,6 +70,7 @@ public class BoardController {
 		return "board/write";
 	}
 	
+	@Auth
 	@RequestMapping(value="/reply/{no}", method=RequestMethod.POST)
 	public String addReply(HttpSession session, BoardVo vo) {
 		//access control
@@ -94,6 +93,7 @@ public class BoardController {
 		return "board/view";
 	}
 	
+	@Auth
 	@RequestMapping("/delete/{no}")
 	public String delete(HttpSession session, @PathVariable("no") Long no) {
 		//access control
@@ -106,6 +106,7 @@ public class BoardController {
 		return "redirect:/board";
 	}
 	
+	@Auth
 	@RequestMapping(value="/update/{no}", method=RequestMethod.GET)
 	public String update(HttpSession session, @PathVariable("no") Long no, Model model) {
 				
@@ -120,6 +121,7 @@ public class BoardController {
 		return "board/modify";
 	}
 	
+	@Auth
 	@RequestMapping(value="/update/{no}", method=RequestMethod.POST)
 	public String update(HttpSession session, @PathVariable("no") Long no, BoardVo vo) {
 		
