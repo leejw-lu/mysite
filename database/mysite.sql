@@ -14,7 +14,7 @@ insert into board select null, 'Hi', 'contents', 0, now(), max(g_no)+1 , 1, 0, 4
 
 select max(g_no)+1 from board;
 
-select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no order by b.g_no desc, b.o_no asc limit 6 , 3;
+select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no and contents like '%13%' order by b.g_no desc, b.o_no asc limit 6 , 3;
 
 update board set hit=hit+1 where no= ?;
 
