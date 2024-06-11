@@ -15,7 +15,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		
 		//1. handler 종류 확인
 		if(!(handler instanceof HandlerMethod)) {
 			//DefaultServelthandler가 처리하는 경우(정적자원, /assets/**, mapping이 안되어있는 URL)
@@ -29,8 +28,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
 		
 		//4. Handler Method에 @Auth가 없는 경우
-		System.out.println("----------------");
-		System.out.println(auth);
 		if(auth==null) {
 			return true;
 		}
@@ -38,9 +35,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 		//5. @Auth가 붙어있기 때문에 인증(Authentication) 확인
 		HttpSession session = request.getSession();
 		UserVo authUser= (UserVo) session.getAttribute("authUser");
-		
-		System.out.println("===============");
-		System.out.println(authUser);
 		
 		//6. 인증이 안되어 있는 경우
 		if(authUser==null) {
