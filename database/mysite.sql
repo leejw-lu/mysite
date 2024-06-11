@@ -8,13 +8,16 @@ update guestbook_log set count=count-1 where date = (select date(reg_date) from 
 select * from guestbook;
 select * from guestbook_log;
 
+-- ROLE 추가
+alter table user add column role enum('ADMIN', 'USER') NOT NULL DEFAULT 'USER';
+
 -- mysite sql
 insert into board values(null, 'Hi', 'contents', 0, now(), (select max(g_no)+1 from board) , 1, 0, 4);
 insert into board select null, 'Hi', 'contents', 0, now(), max(g_no)+1 , 1, 0, 4 from board;
 
 select max(g_no)+1 from board;
 
-select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no and contents like '%13%' order by b.g_no desc, b.o_no asc limit 6 , 3;
+select a.name, b.no, b.title, b.contents, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s'), b.g_no, b.o_no, b.depth from user a, board b where a.no=b.user_no and contents like '%123%' order by b.g_no desc, b.o_no asc limit 6 , 3;
 
 update board set hit=hit+1 where no= ?;
 
