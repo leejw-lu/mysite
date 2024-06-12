@@ -16,6 +16,8 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<org.springframework-version>5.3.36</org.springframework-version>
+		<jcloverslf4j.version>1.7.36</jcloverslf4j.version>		
+	    <logback.version>1.2.11</logback.version>
 	</properties>
 	
 	<dependencies>
@@ -91,6 +93,18 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>2.0.7</version>
+		</dependency>
+		
+		<!-- logback(slf4j) -->
+		<dependency>                                    
+		   <groupId>org.slf4j</groupId>                
+		   <artifactId>jcl-over-slf4j</artifactId>     
+		   <version>${jcloverslf4j.version}</version>  
+		</dependency>
+		<dependency>
+		    <groupId>ch.qos.logback</groupId>
+		    <artifactId>logback-classic</artifactId>
+		    <version>${logback.version}</version>
 		</dependency>
 
 		<!-- servlet -->
