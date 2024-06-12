@@ -27,15 +27,18 @@ public class AuthInterceptor implements HandlerInterceptor {
 		//3. Handler Method의 @Auth 가져오기
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
 		
-		//4. Handler Method에 @Auth가 없는 경우  >>>>>>>>>> adminContoller class 타입에 붙어있는지도 확ㅇ니해야함. 
+		//4. Handler Method에 @Auth가 없는 경우
+		
+		//[퀴즈] 1)Handler Method에 @Auth가 없으면 Type(Class)에 붙어있는지 확인  >>>adminContoller class 타입에 붙어있는지도 확ㅇ니해야함. 
+		if(auth==null) {
+			//auth = handlerMethod.getBean().getClass().getAnnotation(Auth.class);
+			auth=handlerMethod.getMethod().getDeclaringClass().getAnnotation(Auth.class);
+		}
+
+		// 2) handlerMethod 아예 x.
 		if(auth==null) {
 			return true;
 		}
-		
-		//5. Handler Method에 @Auth가 없으면 Type(Class)에 붙어있는지 확인 
-		//>>>>>>>>작성
-		//handlerMethod.hasMethodAnnotation(null); 이거 맞나........?/
-		
 		
 		//6. @Auth가 붙어있기 때문에 인증(Authentication) 여부 확인
 		HttpSession session = request.getSession();
