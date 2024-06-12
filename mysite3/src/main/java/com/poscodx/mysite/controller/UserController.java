@@ -11,7 +11,6 @@ import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.UserService;
 import com.poscodx.mysite.vo.UserVo;
 
-@Auth
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -43,7 +42,6 @@ public class UserController {
 	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.GET)
 	public String update(@AuthUser UserVo authUser, Model model) {
-		
 		//	UserVo authUser= (UserVo) session.getAttribute("authUser");
 		
 		UserVo vo = userService.getUser(authUser.getNo());

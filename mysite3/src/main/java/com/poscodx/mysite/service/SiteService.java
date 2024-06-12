@@ -22,8 +22,4 @@ public class SiteService {
 		siteRepository.update(vo);
 	}
 
-	public void restore(MultipartFile file) {
-		// TODO Auto-generated method stub
-		
-	}
 }
