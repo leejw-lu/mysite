@@ -17,7 +17,7 @@ public class UserVo {
 	private String email;
 	
 	@NotEmpty
-	@Length(min=3, max=16)
+	@Length(min=4, max=16)
 	private String password;
 	
 	private String gender;
