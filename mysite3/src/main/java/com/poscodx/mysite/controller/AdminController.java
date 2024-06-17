@@ -2,6 +2,7 @@ package com.poscodx.mysite.controller;
 
 import javax.servlet.ServletContext;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,8 @@ public class AdminController {
 	@Autowired
 	private ServletContext servletContext;
 	
-//	@Autowired
-//	private ApplicationContext applicationContext;
+	@Autowired
+	private ApplicationContext applicationContext;
 	
 	@Autowired
 	private SiteService siteService;
@@ -51,6 +52,13 @@ public class AdminController {
 		siteService.updateSite(siteVo);
 		servletContext.setAttribute("sitevo", siteVo);
 		
+		SiteVo site= applicationContext.getBean(SiteVo.class);
+		//site.setTitle(siteVo.getTitle());
+		//site.setWelcome(siteVo.getWelcome());
+		//site.setProfile(siteVo.getProfile());
+		//site.setDescription(siteVo.getDescription());
+		BeanUtils.copyProperties(siteVo, site);
+
 		return "redirect:/admin";
 	}
 	

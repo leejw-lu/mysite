@@ -105,6 +105,9 @@
    	<mvc:resources location="file:/fileupload-files/" mapping="/images/**" />
 	<context:annotation-config />
 	
+	<!-- ApplicationContextEventListener -->
+	<bean class="com.poscodx.mysite.event.ApplicationContextEventListener" />
+	
 	<context:annotation-config />
 	<context:component-scan base-package="com.poscodx.mysite.controller, com.poscodx.mysite.exception" />
 
