@@ -31,5 +31,5 @@
 	 |		|		|--- web
 	 |		|		|	  |--- fileupload.properties
 	 |		|		|	  |--- messages
-	 |		|		|	  |       |--- messages_ko.properties
-	 |		|		|	  |       |--- messages_en.properties
+	 |		|		|	  |       |--- message_ko.properties
+	 |		|		|	  |       |--- message_en.properties
