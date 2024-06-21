@@ -66,9 +66,7 @@ public class UserController {
 	
 	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(@AuthUser UserVo authUser) {
-		UserVo vo = userService.getUser(authUser.getNo());
-
+	public String update(@AuthUser UserVo authUser, UserVo vo) {
 		vo.setNo(authUser.getNo());
 		userService.update(vo);
 		
