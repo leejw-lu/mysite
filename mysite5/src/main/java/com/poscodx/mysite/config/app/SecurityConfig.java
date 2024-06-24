@@ -58,7 +58,18 @@ public class SecurityConfig {
     		.usernameParameter("email")
     		.passwordParameter("password")
     		.defaultSuccessUrl("/")
-    		.failureUrl("/user/login?result=fail")
+    		//.failureUrl("/user/login?result=fail")
+    		.failureHandler(new AuthenticationFailureHandler() {
+
+				@Override
+				public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+						AuthenticationException exception) throws IOException, ServletException {
+					request.setAttribute("email", request.getParameter("email"));
+					request
+						.getRequestDispatcher("/user/login")
+						.forward(request, response);
+				}
+			})
     		.and() 			//authorizationManagerRequestMatcherRegistry
     		
     		.csrf()
