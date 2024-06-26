@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% pageContext.setAttribute("newline", "\n"); %>
 
@@ -34,15 +35,17 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<c:if test="${vo.userNo eq authUser.no}">
-						<a href="${pageContext.request.contextPath}/board/update/${vo.no }">글수정</a>
-					</c:if>
-					
-					<c:if test="${not empty authUser.no}">
-						<a href="${pageContext.request.contextPath}/board/reply/${vo.no }">답글쓰기</a>
-					</c:if>
+					<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="principal" var="authUser"/> 
+						<c:if test="${vo.userNo eq authUser.no}">
+							<a href="${pageContext.request.contextPath}/board/update/${vo.no }">글수정</a>
+						</c:if>
+						<c:if test="${not empty authUser.no}">
+							<a href="${pageContext.request.contextPath}/board/reply/${vo.no }">답글쓰기</a>
+						</c:if>
+					</sec:authorize>
+				
 					<a href="${pageContext.request.contextPath}/board">글목록</a>
-					
 				</div>
 			</div>
 		</div>
