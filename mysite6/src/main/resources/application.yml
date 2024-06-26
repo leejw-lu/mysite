@@ -40,6 +40,10 @@ spring:
          max-file-size: 50MB
          max-request-size: 10MB
          
+   error:
+      whitelabel:
+         enabled: false
+      path: /error
          
    # datasource
    datasource:
