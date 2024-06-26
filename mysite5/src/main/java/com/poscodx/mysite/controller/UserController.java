@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.poscodx.mysite.security.Auth;
-import com.poscodx.mysite.security.AuthUser;
 import com.poscodx.mysite.service.UserService;
 import com.poscodx.mysite.vo.UserVo;
 
@@ -53,8 +51,7 @@ public class UserController {
 	public String login() {
 		return "user/login";
 	}
-	
-	@Auth
+
 	@RequestMapping(value="/update", method=RequestMethod.GET)
 	public String update(Authentication authentication, Model model) {
 //      1. SecurityContextHolder(Spring Security ThreadLocal Helper Class) 기반		
@@ -72,9 +69,9 @@ public class UserController {
 		return "user/update";
 	}
 	
-	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(@AuthUser UserVo authUser, UserVo vo) {
+	public String update(Authentication authentication, UserVo vo) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		vo.setNo(authUser.getNo());
 		userService.update(vo);
 		
@@ -82,11 +79,11 @@ public class UserController {
 		return "redirect:/user/update";
 	}
 	
-	@RequestMapping("/auth")
-	public void auth() {
-	}
-	
-	@RequestMapping("/logout")
-	public void logout() {
-	}
+//	@RequestMapping("/auth")
+//	public void auth() {
+//	}
+//	
+//	@RequestMapping("/logout")
+//	public void logout() {
+//	}
 }
