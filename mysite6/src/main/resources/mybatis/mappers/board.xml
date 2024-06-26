@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<select id="findAll" parameterType="map" resultType="boardvo">
+	<![CDATA[	
+		select a.name as userName, b.no as no , title, contents, hit, date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') as regDate, g_no as groupNo, o_no as orderNo, depth 
+		from user a, board b where a.no=b.user_no 
+		order by groupNo desc, orderNo asc limit #{start } , #{size }	
+	]]>
+	</select>
+
+	<update id="updateOrderNo" parameterType="map"> 
+		<![CDATA[
+			update board set o_no=o_no+1 where g_no= #{gNo } and o_no >= #{oNo }+1
+		]]>
+	</update>
+
+	<insert id="insert" parameterType="boardvo">
+		<choose>
+			<when test='groupNo == ""'>
+				<![CDATA[
+				insert into board select null, #{title }, #{contents }, 0 , now(), max(g_no)+1 , 1, 0, #{userNo} from board
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				insert into board values(null, #{title }, #{contents }, 0, now(), #{groupNo } , #{orderNo } +1, #{depth } +1 , #{userNo} )
+				]]>
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<select id="findByNo" parameterType="long" resultType="boardvo">
+		<![CDATA[
+		select no, title, contents, user_no as userNo, g_no as groupNo, o_no as orderNo, depth from board where no= #{no }
+		]]>
+	</select>
+	
+	<update id="updateHit" parameterType="long"> 
+		<![CDATA[
+			update board set hit=hit+1 where no= ${no }
+		]]>
+	</update>
+	
+	<update id="update" parameterType="boardvo"> 
+		<![CDATA[
+			update board set title=#{title }, contents=#{contents }, reg_date=now() where no=#{no } and user_no=#{userNo }
+		]]>
+	</update>
+	
+	<delete id= "deleteByNo" parameterType="map">
+		<![CDATA[
+		delete from board where no = #{boardNo } and user_no= #{userNo }
+		]]>
+	</delete>
+
+	<select id="findPage" parameterType="int" resultType="com.poscodx.mysite.vo.Page">
+		<![CDATA[
+		select count(*) as totalCount, ceil(count(*)/${pageSize }) as endPage from board
+		]]>
+	</select>
+
+</mapper>
