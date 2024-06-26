@@ -81,7 +81,7 @@ public class SecurityConfig {
     				.requestMatchers(new RegexRequestMatcher("^/admin/?.*$", null))
     				.hasRole("ADMIN")
     				
-    				.requestMatchers(new RegexRequestMatcher("^/board/(insert|reply|delete|update)?/.*$", null))
+    				.requestMatchers(new RegexRequestMatcher("^/board/?(insert|reply|delete|update).*$", null))
     				.hasAnyRole("ADMIN", "USER")
     				
     				.requestMatchers(new RegexRequestMatcher("^/user/update$", null))
