@@ -61,7 +61,7 @@ mybatis:
 
 # server configuration
 server:
-   port: 8084
+   port: 8080
    servlet:
       context-path: /mysite6
       encoding:
